@@ -28,8 +28,6 @@ const userSchema = new Schema({
   },
   photo: {
     type: String,
-    required: true,
-    default: "userdef.svg",
   },
   date: {
     type: Date,
