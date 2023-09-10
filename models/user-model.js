@@ -28,6 +28,8 @@ const userSchema = new Schema({
   },
   photo: {
     type: String,
+    required: true,
+    default: "",
   },
   date: {
     type: Date,
