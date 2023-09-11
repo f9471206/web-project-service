@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const userModel = require("../models").userModel;
+const openModal = require("../models").postModel;
 
 router.use((req, res, next) => {
   console.log("post route is requset");
