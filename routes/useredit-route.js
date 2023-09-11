@@ -53,4 +53,26 @@ router.post("/editAll/:_id", async (req, res) => {
     });
 });
 
+//刪除帳號
+router.post("/deleteuser", async (req, res) => {
+  let email = req.user.email;
+  const foundUser = await userModel.findOne({ email });
+  if (!foundUser) {
+    return res.status(401).send({ email: false });
+  }
+  foundUser.comparePassword(req.body.password, async (err, isMath) => {
+    if (err) {
+      //使用 user-medel.js 的 comparePassword (err , isMath)=> cb()
+      return res.status(400).send(err);
+    }
+    if (isMath) {
+      await openModal.deleteMany({ author: req.user._id });
+      await userModel.deleteOne({ email });
+      res.send("已經刪除");
+    } else {
+      return res.status(401).send({ password: false });
+    }
+  });
+});
+
 module.exports = router;
