@@ -20,7 +20,7 @@ router.post("/register", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const emailExist = await User.findOne({ email: req.body.email });
-  if (emailExist) return res.status(400).send("此信箱已經被註冊過...");
+  if (emailExist) return res.status(400).send({ emailExist: true });
 
   let { username, email, password } = req.body;
   let newUser = new User({ username, email, password });
