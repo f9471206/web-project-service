@@ -117,7 +117,6 @@ router.post("/editepost/:_id", async (req, res) => {
 
 //留言
 router.post("/:_id/reply", async (req, res) => {
-  console.log("1231");
   let { error } = replyValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -128,7 +127,7 @@ router.post("/:_id/reply", async (req, res) => {
     if (!postFound) {
       return res.status(500).send("查無貼文");
     }
-    postFound.reply.unshift({ user: req.user._id, content });
+    postFound.reply.push({ user: req.user._id, content });
     await postFound.save();
     res.send(postFound.reply);
   } catch (e) {
