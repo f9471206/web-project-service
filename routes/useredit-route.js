@@ -76,4 +76,40 @@ router.post("/deleteuser", async (req, res) => {
   });
 });
 
+//管理員查看會員
+router.post("/emember", async (req, res) => {
+  //驗證管理員
+  if (req.user.role !== "admin") {
+    return res.status(401).send({ role: false });
+  }
+  //確認帳號
+  let email = req.user.email;
+  const foundUser = await userModel.findOne({ email });
+  if (!foundUser) {
+    return res.status(401).send({ email: false });
+  }
+  let user = await userModel.find({});
+  return res.send(user);
+});
+
+//管理員查看會員詳細資料
+router.get("/manag-emember/:_id", async (req, res) => {
+  let _id = req.params;
+  //驗證管理員
+  if (req.user.role !== "admin") {
+    return res.status(401).send({ role: false });
+  }
+  //確認帳號
+  let email = req.user.email;
+  const foundUser = await userModel.findOne({ email });
+  if (!foundUser) {
+    return res.status(401).send({ email: false });
+  }
+
+  let content = await openModal.find({
+    author: _id,
+  });
+  return res.send(content);
+});
+
 module.exports = router;

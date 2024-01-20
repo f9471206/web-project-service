@@ -4,8 +4,6 @@ const replyValidation = require("../validation").replyValidation;
 const e = require("cors");
 
 const postModel = require("../models").postModel;
-const userModel = require("../models").userModel;
-
 router.use((req, res, next) => {
   console.log("post route is requset");
   next();

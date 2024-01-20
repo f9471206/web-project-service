@@ -13,6 +13,7 @@ router.get("/testApi", (req, res) => {
   res.send("success auth Router");
 });
 
+//註冊
 router.post("/register", async (req, res) => {
   // console.log(registerValidation(req.body).error.details[0].message);
   //確認輸入資料是否符合規範 (Joi)
