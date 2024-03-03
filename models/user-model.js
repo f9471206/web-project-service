@@ -28,10 +28,17 @@ const userSchema = new Schema({
   },
   photo: {
     type: String,
+    default: "https://i.imgur.com/PfH7vb3.png",
   },
   date: {
     type: Date,
     default: Date.now,
+  },
+  about: {
+    type: String,
+  },
+  bg: {
+    type: String,
   },
 });
 

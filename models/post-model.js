@@ -6,13 +6,22 @@ const postSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  title: {
+    type: String,
+    required: true,
+    maxlength: 50,
+  },
   content: {
     type: String,
     required: true,
-    maxlength: 1024,
+    maxlength: 500,
   },
   image: {
     type: String,
+  },
+  tag: {
+    type: Number,
+    required: true,
   },
   like: {
     type: [String],
