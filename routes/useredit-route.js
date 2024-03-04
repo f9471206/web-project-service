@@ -29,9 +29,10 @@ router.patch("/edit", upload.array("image"), async (req, res, next) => {
   } else if (req.body.URL_image != "") {
     imageURL = req.body.URL_image;
   }
-  let { username, about } = req.body;
+  let { name, about } = req.body;
+  console.log(req.body);
   await userModel
-    .findOneAndUpdate({ _id }, { username, about, photo: imageURL })
+    .findOneAndUpdate({ _id }, { username: name, about, photo: imageURL })
     .then((d) => {
       res.send("success");
     })
