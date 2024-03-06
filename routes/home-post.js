@@ -18,10 +18,58 @@ router.get("/:_tag?" || "/", async (req, res) => {
   let { sort } = req.query;
   if (sort == "old") sort = { date: 1 };
   if (sort == "undefined") sort = { date: -1 };
-  if (sort == "like") sort = { like: -1 };
   if (sort == "hot") sort = { reply: -1 };
   let { count } = req.query;
   let skip = count * 5;
+  if (sort == "like") {
+    if (_tag == "undefined") {
+      try {
+        let getPost = await postModel.aggregate([
+          { $addFields: { likeCount: { $size: "$like" } } },
+          { $sort: { likeCount: -1 } },
+          { $skip: skip },
+          { $limit: 5 },
+          {
+            $lookup: {
+              from: "users",
+              localField: "author",
+              foreignField: "_id",
+              as: "author",
+            },
+          },
+          { $unwind: "$author" },
+          { $project: { "author.password": 0 } },
+        ]);
+        res.send(getPost);
+        return;
+      } catch (err) {
+        res.send(err);
+      }
+    }
+    try {
+      let getPost = await postModel.aggregate([
+        { $match: tag },
+        { $addFields: { likeCount: { $size: "$like" } } },
+        { $sort: { likeCount: -1 } },
+        { $skip: skip },
+        { $limit: 5 },
+        {
+          $lookup: {
+            from: "users",
+            localField: "author",
+            foreignField: "_id",
+            as: "author",
+          },
+        },
+        { $unwind: "$author" },
+        { $project: { "author.password": 0 } },
+      ]);
+      res.send(getPost);
+    } catch (err) {
+      res.send(err);
+    }
+    return;
+  }
   try {
     let getPost = await postModel
       .find(tag)
@@ -30,6 +78,7 @@ router.get("/:_tag?" || "/", async (req, res) => {
       .limit(5)
       .skip(skip)
       .exec();
+    console.log(getPost);
     res.send(getPost);
   } catch (err) {
     res.send(err);
